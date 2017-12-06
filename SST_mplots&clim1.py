@@ -15,8 +15,10 @@ from mpl_toolkits.basemap import Basemap
 
 #HARDCODES
 num_of_panels=3
-mth=12
-day=1
+mth=11
+day=16
+temprange=np.arange(7,12,0.05)
+colorticks=np.linspace(7,12,6)
 datetime=[dt.datetime(2017,11,11,23,59,59,0),dt.datetime(2017,11,23,23,59,59,0),dt.datetime(2017,mth,day,0,0,0)]
 gbox=[-70.7,-69.9,41.7,42.15] 
 latsize=[gbox[2],gbox[3]]
@@ -73,9 +75,9 @@ for i in range(num_of_panels):
     sst_part[(sst_part==-999)]=np.NaN # if sst_part=-999, convert to NaN
     X1,Y1=np.meshgrid(lon[index_lon11:index_lon12],lat[index_lat11:index_lat12])
     axes[m,k].set_title(str(datetime[i].strftime("%d-%b-%Y %H:%M")),loc='center')  
-    a=axes[m,k].contourf(X1,Y1,sst_part[0],np.arange(7,12,0.05))
+    a=axes[m,k].contourf(X1,Y1,sst_part[0],temprange)
 cb=plt.colorbar(a,ax=axes[1,0])
-cb.set_ticks(np.linspace(7,12,6))
+cb.set_ticks(colorticks)
 cb.set_label('Degree C')
 plt.savefig('11 vs 23 NOV 2017&clim.png')
 plt.show()   
