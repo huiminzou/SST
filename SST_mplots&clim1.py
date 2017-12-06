@@ -23,23 +23,17 @@ datetime=[dt.datetime(2017,11,11,23,59,59,0),dt.datetime(2017,11,23,23,59,59,0),
 gbox=[-70.7,-69.9,41.7,42.15] 
 latsize=[gbox[2],gbox[3]]
 lonsize=[gbox[0],gbox[1]]
-fig,axes=plt.subplots(2,2,figsize=(15,8))
-axes[1,1].remove()#don't display this axes
+fig,axes=plt.subplots(3,1,figsize=(7,11))
+#axes[1,1].remove()#don't display this axes
 #fig=plt.figure()
 #ax1=fig.add_subplots(2,2,1)
 #ax2=fig.add_subplots(2,2,2)
 #ax3=fig.add_subplots(2,2,3)
 for i in range(num_of_panels):
-    if i==0:
-        m=0;k=0
-    elif i==1:
-        m=0;k=1
-    else:
-        m=1;k=0
     #DRAW BASEMAP
     m1 = Basemap(projection='cyl',llcrnrlat=min(latsize)-0.01,urcrnrlat=max(latsize)+0.01,\
             llcrnrlon=min(lonsize)-0.01,urcrnrlon=max(lonsize)+0.01,resolution='h')
-    m1.ax=axes[m,k]
+    m1.ax=axes[i]
     m1.drawparallels(np.arange(min(latsize),max(latsize)+1,0.1),labels=[1,0,0,0])
     m1.drawmeridians(np.arange(min(lonsize),max(lonsize)+1,0.2),labels=[0,0,0,1])
     m1.drawcoastlines()
@@ -74,9 +68,15 @@ for i in range(num_of_panels):
     sst_part=sst[index,index_lat11:index_lat12,index_lon11:index_lon12]
     sst_part[(sst_part==-999)]=np.NaN # if sst_part=-999, convert to NaN
     X1,Y1=np.meshgrid(lon[index_lon11:index_lon12],lat[index_lat11:index_lat12])
-    axes[m,k].set_title(str(datetime[i].strftime("%d-%b-%Y %H:%M")),loc='center')  
-    a=axes[m,k].contourf(X1,Y1,sst_part[0],temprange)
-cb=plt.colorbar(a,ax=axes[1,0])
+    if i==2:
+        t=axes[2].set_title(str(datetime[i].strftime("%d-%b"))+'-clim',loc='center')
+    else:
+        
+        t=axes[i].set_title(str(datetime[i].strftime("%d-%b-%Y %H:%M")),loc='center')
+    
+    a=axes[i].contourf(X1,Y1,sst_part[0],temprange)
+#cbar_ax = fig.add_axes([0.85, 0.15, 0.05, 0.7])
+cb=plt.colorbar(a,ax=axes.ravel().tolist())
 cb.set_ticks(colorticks)
 cb.set_label('Degree C')
 plt.savefig('11 vs 23 NOV 2017&clim.png')
