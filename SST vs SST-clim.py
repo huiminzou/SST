@@ -6,6 +6,7 @@ Created on Thu Dec  7 09:26:54 2017
 multi-plots,comparing SST & SST-clim
 under the plot of SST is the plot of SST-clim on the same day
 the data is raw data
+the last url is climatology
 """
 import sys
 import datetime as dt
@@ -27,8 +28,8 @@ rows=3
 cols=2
 fig,axes=plt.subplots(rows,cols,figsize=(10,8))
 #axes[1,1].remove()#don't display this axes
-for i in range(3):
-    for k in range(2):
+for i in range(rows):
+    for k in range(cols):
         #DRAW BASEMAP
         m1 = Basemap(projection='cyl',llcrnrlat=min(latsize)-0.01,urcrnrlat=max(latsize)+0.01,\
                 llcrnrlon=min(lonsize)-0.01,urcrnrlon=max(lonsize)+0.01,resolution='h')
@@ -83,5 +84,5 @@ plt.subplots_adjust(wspace=0.15,hspace=0.02)
 cb=plt.colorbar(a,ax=axes.ravel().tolist())
 cb.set_ticks(colorticks)
 cb.set_label('Degree C')
-plt.savefig('11 vs 23 NOV 2017&clim.png')
+plt.savefig('SST vs SST-clim.png')
 plt.show() 
